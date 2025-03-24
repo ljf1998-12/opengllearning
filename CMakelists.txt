@@ -1,0 +1,16 @@
+cmake_minimum_required(VERSION 3.20)
+
+project(new_project LANGUAGES C CXX)
+add_executable(${PROJECT_NAME})
+target_sources(${PROJECT_NAME} PRIVATE src/main.cpp src/my_log.cpp src/utilities.cpp)
+target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_17)
+
+set(CMAKE_PREFIX_PATH "C:/libs/glog")
+find_package (glog 0.7.1 REQUIRED)
+
+target_include_directories(${PROJECT_NAME} PRIVATE include externals/glfw/include)
+
+add_subdirectory(externals/glad)
+
+#target_link_libraries(${PROJECT_NAME} PRIVATE glad ${CMAKE_SOURCE_DIR}/externals/glfw/libglfw3dll.a)
+target_link_libraries(${PROJECT_NAME} PRIVATE glad glog::glog ${CMAKE_SOURCE_DIR}/externals/glfw/libglfw3dll.a)
