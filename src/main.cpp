@@ -24,10 +24,13 @@ static void error_callback(int error, const char *description);
 static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 
 int main(int argc,char *argv[]){
-    cout << "enter main" << endl;
-   google::InitGoogleLogging(argv[0]); 
-   google::SetLogDestination(google::GLOG_INFO, "./logs/info_");  // INFO级别的日志将被保存到 info_*.log 文件
-   LOG(INFO) << "Found " << 100 << " cookies"; 
+    //初始化glog
+    google::InitGoogleLogging(argv[0]); 
+    //设置日志目录
+    FLAGS_log_dir = "./logs";
+    //设置日志文件模式：附加
+    FLAGS_logfile_mode = 0666;
+    LOG(INFO) << "Found " << 100 << " cookies"; 
     LOG_INFO("Enter main");
     //设置glfw错误回调
     glfwSetErrorCallback(error_callback);
@@ -76,8 +79,8 @@ int main(int argc,char *argv[]){
         }
     #else
     #endif
-    const string vpath = "D:\\OneDrive\\learnopengl\\src\\09\\vshaderSource.glsl";
-    const string fpath = "D:\\OneDrive\\learnopengl\\src\\09\\fshaderSource.glsl";
+    const string vpath = "D:\\OneDrive\\vscode\\new_project\\src\\vshaderSource.glsl";
+    const string fpath = "D:\\OneDrive\\vscode\\new_project\\src\\fshaderSource.glsl";
     GLuint vref = create_shader(vpath,GL_VERTEX_SHADER);
     GLuint fref = create_shader(fpath,GL_FRAGMENT_SHADER);
     if(vref){
@@ -89,13 +92,10 @@ int main(int argc,char *argv[]){
     glLinkProgram(renderingProgram);
     glGenVertexArrays(numVAOs, vao);
     glBindVertexArray(vao[0]);
-    //设置OpenGL默认缓冲底色
-    glClearColor(1.0, 0.0, 0.0, 1.0);
     //清空缓冲区
     glClear(GL_COLOR_BUFFER_BIT);
     glUseProgram(renderingProgram);
-    glPointSize(30.0f); //设置点的大小为30
-    glDrawArrays(GL_POINTS, 0, 1);
+    glDrawArrays(GL_TRIANGLES, 0, 3);
     //交换缓冲区
     glfwSwapBuffers(window);
     while (!glfwWindowShouldClose(window)){
